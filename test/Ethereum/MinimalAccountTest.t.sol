@@ -102,7 +102,7 @@ contract MinimalAccountTest is Test {
         bytes memory functionData = abi.encodeWithSelector(ERC20Mock.mint.selector, address(minimalAccount), AMOUNT);
         bytes memory executeCallData =
             abi.encodeWithSelector(ZkMinimalAccount.execute.selector, dest, value, functionData);
-        
+
         // Fund both the account and entry point
         vm.deal(address(minimalAccount), 1e18);
         vm.deal(helperConfig.getConfig().entryPoint, 1e18);
@@ -115,11 +115,11 @@ contract MinimalAccountTest is Test {
         // Set up the operation array
         PackedUserOperation[] memory ops = new PackedUserOperation[](1);
         ops[0] = packedUserOp;
-        
+
         // Execute the operation
         vm.prank(randomUser);
         IEntryPoint(helperConfig.getConfig().entryPoint).handleOps(ops, payable(randomUser));
-        
+
         // Assert
         assertEq(usdc.balanceOf(address(minimalAccount)), AMOUNT);
     }
